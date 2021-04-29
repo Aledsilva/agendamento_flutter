@@ -14,12 +14,12 @@ class _HomeScreenState extends State<HomeScreen> {
     "Unidos do GreenValley",
     "Centro - Osasco",
     "Terminal Grajaú",
-    "Eita Guainazes",
+    "Eita Guaianazes",
   ];
   String spaceName = "";
   String resultadoFinal;
-  
-  
+
+
   DateTime selectedDate = DateTime.now();
   DateTime startDate = DateTime.now().subtract(Duration(days: 10));
   DateTime endDate = DateTime.now().add(Duration(days: 10));
@@ -87,134 +87,82 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               children: [
                 _buildCard("16:00"),
-                _buildCard("13:00")
+                SizedBox(height: 5),
+                _buildCard("13:00"),
+                SizedBox(height: 5),
+                _buildCard("13:00"),
+
               ],
+            ),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: SizedBox(
+                  height: 50,
+                  width: 365,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0)
+                    ),
+                    color: Colors.blue,
+                    child: Text("RESERVAR",
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                    ),
+                    onPressed: (){},
+                  ),
+                ),
+              )
             )
           ],
         ),
       ),
     );
-
   }
 
   Widget _buildCard(String hour) {
     return Center(
       child: SizedBox(
-        height: 150,
-        width: 375,
+        height: 170,
+        width: 372,
         child: Card(
           elevation: 5,
           child: Padding(
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 22),
               child: Column(
                 children: [
-                  SizedBox(height: 15),
+                  SizedBox(height: 5,),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                      onTap: (){},
-                      child: Text(hour,
-                        style: TextStyle(fontWeight: FontWeight.bold),),
-                    ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
                     ],
                   ),
-                  SizedBox(height: 30),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [GestureDetector(
-                      onTap: (){},
-                      child: Text(hour,
-                        style: TextStyle(fontWeight: FontWeight.bold),),
-                    ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
                     ],
                   ),
-                  SizedBox(height: 30),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: (){
-                          print(hour);
-                        },
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(hour,
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text("          ",
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
+                      _buildTxtButton(hour),
                     ],
                   ),
                 ],
@@ -222,6 +170,19 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTxtButton(String hour){
+    return TextButton(
+      onPressed: (){
+        setState(() {
+          
+        });
+      },
+      child: Text(hour,
+        style: TextStyle(fontWeight: FontWeight.bold,
+            color: Colors.black),),
     );
   }
 }
