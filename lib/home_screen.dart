@@ -1,4 +1,5 @@
-import 'package:agendamento_flutter/modalities.dart';
+import 'package:agendamento_flutter/scheduling_options.dart';
+import 'package:agendamento_flutter/testepage.dart';
 import 'package:flutter/material.dart';
 import 'package:scrolling_day_calendar/scrolling_day_calendar.dart';
 import 'package:http/http.dart' as http;
@@ -10,22 +11,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 //Estilo para a TextButton em caso de ser selecionada//
-const pressedStyle = TextStyle(backgroundColor: Colors.blue,
+const pressedStyle = TextStyle(
+    backgroundColor: Colors.blue,
     color: Colors.white,
     fontWeight: FontWeight.bold);
 
-
 class _HomeScreenState extends State<HomeScreen> {
-
-  Future<Modalities> getDinamicProfile() async {
+  Future<SchedulingOptions> getDinamicProfile() async {
     Map<String, String> headers = {
-      'Authorization': 'Token token="f36c0e875dad51710bff6a67ba8df133"',
+      'Authorization': 'Token token="bb739e7760407cc4985ae37038a1bef2"',
       'x-app-id': "1000051",
     };
 
-    String urlBase = "https://ravennahmlg.ad-alive.com/api/v1/spaces/list_hours";
+    String urlBase =
+        "https://ravennahmlg.ad-alive.com/api/v1/spaces/list_hours?day=2021-05-03";
 
-    final response = await http.get(urlBase, headers: headers);
+    final response = await http.get(
+      urlBase,
+      headers: headers,
+    );
 
     print('params uri: ${urlBase.toString()}');
     print('HEADERS' + headers.toString());
@@ -35,15 +39,53 @@ class _HomeScreenState extends State<HomeScreen> {
       // then parse the JSON.
       print('response:' + response.body);
       setState(() {
-
-        Modalities.fromJson(json.decode(response.body)).optionUses.forEach((element) {
+        SchedulingOptions.fromJson(json.decode(response.body))
+            .optionUses
+            .forEach((element) {
           listaQualquer.add(element.name);
         });
 
         //listaQualquer =
-            //Modalities.fromJson(json.decode(response.body)).optionUses;
+        //Modalities.fromJson(json.decode(response.body)).optionUses;
       });
-      return Modalities.fromJson(json.decode(response.body));
+      return SchedulingOptions.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      print('Response Error. Code: ${response.statusCode}');
+      throw Exception('Failed to load HORARIOS');
+    }
+  }
+
+  Future<SchedulingOptions> getTimeTable() async {
+    Map<String, String> headers = {
+      'Authorization': 'Token token="bb739e7760407cc4985ae37038a1bef2"',
+      'x-app-id': "1000051",
+    };
+
+    String urlBase =
+        "https://ravennahmlg.ad-alive.com/api/v1/spaces/list_hours?day=2021-05-03&option_use_id=1";
+
+    final response = await http.get(urlBase, headers: headers);
+
+    print('params uri: ${urlBase.toString()}');
+    print('HEADERS' + headers.toString());
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print('HORARIO:' + response.body);
+      setState(() {
+        SchedulingOptions.fromJson(json.decode(response.body))
+            .hours
+            .forEach((element) {
+          listaHorarios.add(element.hour);
+        });
+
+        //listaQualquer =
+        //Modalities.fromJson(json.decode(response.body)).optionUses;
+      });
+      return SchedulingOptions.fromJson(json.decode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -53,19 +95,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String valorSelecionado;
+  String spaceName = "";
 
   List listaQualquer = [
-    /*"Unidos do GreenValley",
-    "Centro - Osasco",
-    "Terminal Grajaú",
-    "Eita Guaianazes",*/
+    /*"Unidos do GreenValley","Centro - Osasco","Terminal Grajaú","Eita Guaianazes",*/
   ];
-
-  String spaceName = "";
-  String resultadoFinal;
+  List listaHorarios = [];
 
   bool _hasBeenPressed = true;
+  bool _hasSelected = true;
 
+  //Váriaveis relacionados ao calendário
   DateTime selectedDate = DateTime.now();
   DateTime startDate = DateTime.now().subtract(Duration(days: 10));
   DateTime endDate = DateTime.now().add(Duration(days: 10));
@@ -80,37 +120,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
 
-        //Actions: são os widgets que estão dentro desta na AppBar
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(left: 10.0),
-          child: InkWell(
-            child: Container(
-              width: 50,
-              height: 50,
-              child: Icon(Icons.menu, color: Colors.white),
-            ),
-            onTap: () {},
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: 275),
-            child: InkWell(
-              child: Container(
-                width: 50,
-                height: 50,
-                child: Icon(Icons.notifications, color: Colors.white),
+          //Actions: são os widgets que estão dentro desta na AppBar
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: InkWell(
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  child: Icon(Icons.menu, color: Colors.white),
+                ),
+                onTap: () {},
               ),
-              onTap: () {},
             ),
-          ),
-        )
-      ]),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: 275),
+                child: InkWell(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    child: Icon(Icons.notifications, color: Colors.white),
+                  ),
+                  onTap: () {},
+                ),
+              ),
+            )
+          ]),
 
       //Calendário que está abaixo da AppBar
       body: ScrollingDayCalendar(
@@ -132,9 +171,8 @@ class _HomeScreenState extends State<HomeScreen> {
         widgetKeyFormat: widgetKeyFormat,
         noItemsWidget:
 
-
             //Aqui está a construção da DropDown
-        Column(
+            Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 8.0),
@@ -142,17 +180,21 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
               child: DropdownButton(
                 dropdownColor: Colors.grey[100],
-                hint: Text("  Modalidades :",
-                  style: TextStyle(color: Colors.grey[500],),),
+                hint: Text(
+                  "  Modalidades :",
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                  ),
+                ),
                 icon: Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: Colors.blue,),
+                  color: Colors.blue,
+                ),
                 iconSize: 36,
                 isExpanded: true,
                 value: valorSelecionado,
                 style: TextStyle(color: Colors.blue, fontSize: 18),
                 items: listaQualquer.map((modalityItem) {
-
                   return DropdownMenuItem(
                     value: modalityItem,
                     child: Row(
@@ -162,98 +204,91 @@ class _HomeScreenState extends State<HomeScreen> {
                 }).toList(),
                 onChanged: (newModalityItem) {
                   setState(() {
+                    getTimeTable();
                     valorSelecionado = newModalityItem;
+                    spaceName = newModalityItem;
                   });
                 },
               ),
             ),
 
-
             //Abaixo da DropDown
-            //Torna a página rolável ENTRE o Widget do no TOP e no BOTTOM
-            Expanded(child: ListView(
-              children: [
-                _buildCard("16:00"),
-                SizedBox(height: 5),
-                _buildCard("17:00"),
-                SizedBox(height: 5),
-                _buildCard("13:00"),
-                SizedBox(height: 5),
-                _buildCard("12:30"),
-                SizedBox(height: 5),
-                _buildCard("16:00"),
-              ],
-            )),
-
+            //DENTRO DESTA FUNÇÃO - Torna a página rolável ENTRE o Widget do no TOP e no BOTTOM
+            if(valorSelecionado !=null)
+              _buildCard(),
 
             //Validacão para botão RESERVAR, ele só aparece quando necessário!
-            Visibility(child: _buildReserveButton(),
-            visible: _hasBeenPressed ? false : true,),
+            Visibility(
+              child: _buildReserveButton(),
+              visible: _hasBeenPressed ? false : true,
+            ),
 
-            SizedBox(height: 20,)
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
     );
   }
 
-
-
-
-
   //////////  FUNÇÕES  //////////
 
-  Widget _buildCard(String hour) {
-    return Center(
-      child: SizedBox(
-        height: 170,
-        width: 372,
-        child: Card(
-          elevation: 5,
-          child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 22),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                      _buildTxtButton(hour),
-                    ],
-                  ),
-                ],
-              )),
-        ),
-      ),
-    );
+  Widget _buildCard() {
+    return Expanded(
+        child: ListView(
+      children: [
+        Center(
+          child: SizedBox(
+            height: 210,
+            width: 372,
+            child: Card(
+              elevation: 5,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  crossAxisSpacing: 3,
+                  mainAxisSpacing: 5,
+                ),
+                  itemCount: listaHorarios.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 22),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          /*Visibility(
+                          visible: _hasSelected ? true : false,
+                          child: SizedBox(width: 310,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: Text(spaceName,
+                                style: TextStyle(fontWeight: FontWeight.bold,
+                                    fontSize: 18),),),
+
+                          )),*/
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              _buildTxtButton(listaHorarios[index].toString()),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [],
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+            ),
+          ),
+        )
+      ],
+    ));
   }
 
   //Constrói os horários clicáveis//
@@ -266,17 +301,19 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Text(
         hour,
-        style: _hasBeenPressed? TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            backgroundColor: Colors.white) : pressedStyle ,
+        style: _hasBeenPressed
+            ? TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                backgroundColor: Colors.white)
+            : pressedStyle,
       ),
     );
   }
 
   //Contrói o botão RESERVAR//
-  Widget _buildReserveButton(){
-    return  Center(
+  Widget _buildReserveButton() {
+    return Center(
       child: Padding(
         padding: EdgeInsets.only(top: 8),
         child: SizedBox(
@@ -290,12 +327,13 @@ class _HomeScreenState extends State<HomeScreen> {
               "RESERVAR",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TestePage()));
+            },
           ),
         ),
       ),
     );
   }
 }
-
-
