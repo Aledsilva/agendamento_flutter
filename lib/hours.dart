@@ -1,8 +1,9 @@
 class Hours {
   String hour;
   bool active;
+  bool hasBeenPressed = true;
 
-  Hours({this.hour, this.active});
+  Hours({this.hour, this.active, this.hasBeenPressed});
 
   Hours.fromJson(Map<String, dynamic> json) {
     hour = json['hour'];

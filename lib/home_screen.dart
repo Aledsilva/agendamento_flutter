@@ -1,20 +1,30 @@
+import 'dart:convert';
+
 import 'package:agendamento_flutter/scheduling_options.dart';
 import 'package:agendamento_flutter/testepage.dart';
 import 'package:flutter/material.dart';
-import 'package:scrolling_day_calendar/scrolling_day_calendar.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:scrolling_day_calendar/scrolling_day_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+
+final format = DateFormat('HH:mm');
+
 //Estilo para a TextButton em caso de ser selecionada//
 const pressedStyle = TextStyle(
     backgroundColor: Colors.blue,
     color: Colors.white,
     fontWeight: FontWeight.bold);
+
+const hourStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    backgroundColor: Colors.white);
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<SchedulingOptions> getDinamicProfile() async {
@@ -35,8 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
     print('HEADERS' + headers.toString());
 
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
       print('response:' + response.body);
       setState(() {
         SchedulingOptions.fromJson(json.decode(response.body))
@@ -44,14 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
             .forEach((element) {
           listaQualquer.add(element.name);
         });
-
-        //listaQualquer =
-        //Modalities.fromJson(json.decode(response.body)).optionUses;
       });
       return SchedulingOptions.fromJson(json.decode(response.body));
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       print('Response Error. Code: ${response.statusCode}');
       throw Exception('Failed to load HORARIOS');
     }
@@ -64,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
     };
 
     String urlBase =
-        "https://ravennahmlg.ad-alive.com/api/v1/spaces/list_hours?day=2021-05-03&option_use_id=1";
+        "https://ravennahmlg.ad-alive.com/api/v1/spaces/list_hours?day=${selectedDate}&option_use_id=1";
 
     final response = await http.get(urlBase, headers: headers);
 
@@ -79,7 +82,12 @@ class _HomeScreenState extends State<HomeScreen> {
         SchedulingOptions.fromJson(json.decode(response.body))
             .hours
             .forEach((element) {
-          listaHorarios.add(element.hour);
+          var dateTimeString = element.hour;
+          var dateTime = DateTime.parse(dateTimeString);
+
+          var formaterClock = format.format(dateTime);
+
+          listaHorarios.add(formaterClock);
         });
 
         //listaQualquer =
@@ -97,13 +105,10 @@ class _HomeScreenState extends State<HomeScreen> {
   String valorSelecionado;
   String spaceName = "";
 
-  List listaQualquer = [
-    /*"Unidos do GreenValley","Centro - Osasco","Terminal Grajaú","Eita Guaianazes",*/
-  ];
+  List listaQualquer = [];
   List listaHorarios = [];
 
   bool _hasBeenPressed = true;
-  bool _hasSelected = true;
 
   //Váriaveis relacionados ao calendário
   DateTime selectedDate = DateTime.now();
@@ -160,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
-        displayDateFormat: "dd, MMM yyyy",
+        displayDateFormat: "EEEE, d 'de' MMMM",
         dateBackgroundColor: Colors.grey,
         forwardIcon: Icons.arrow_forward_ios_outlined,
         backwardIcon: Icons.arrow_back_ios_outlined,
@@ -214,8 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             //Abaixo da DropDown
             //DENTRO DESTA FUNÇÃO - Torna a página rolável ENTRE o Widget do no TOP e no BOTTOM
-            if(valorSelecionado !=null)
-              _buildCard(),
+            if (valorSelecionado != null) _buildCard(),
 
             //Validacão para botão RESERVAR, ele só aparece quando necessário!
             Visibility(
@@ -223,9 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
               visible: _hasBeenPressed ? false : true,
             ),
 
-            SizedBox(
-              height: 20,
-            )
+            SizedBox(height: 20)
           ],
         ),
       ),
@@ -245,22 +247,17 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Card(
               elevation: 5,
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  crossAxisSpacing: 3,
-                  mainAxisSpacing: 5,
-                ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 6,
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 1,
+                  ),
                   itemCount: listaHorarios.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 22),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 5,
-                          ),
-                          /*Visibility(
+                    return Column(
+                      children: [
+                        SizedBox(height: 5),
+                        /*Visibility(
                           visible: _hasSelected ? true : false,
                           child: SizedBox(width: 310,
                             child: Padding(
@@ -270,18 +267,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fontSize: 18),),),
 
                           )),*/
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              _buildTxtButton(listaHorarios[index].toString()),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [],
-                          ),
-                        ],
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildTxtButton(
+                                listaHorarios[index].toString(), index),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [],
+                        ),
+                      ],
                     );
                   }),
             ),
@@ -292,22 +289,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //Constrói os horários clicáveis//
-  Widget _buildTxtButton(String hour) {
+  Widget _buildTxtButton(String umHorario, index) {
     return TextButton(
+      child: Text(umHorario,
+          style:
+      _hasBeenPressed ? hourStyle : pressedStyle),
       onPressed: () {
         setState(() {
           _hasBeenPressed = !_hasBeenPressed;
         });
       },
-      child: Text(
-        hour,
-        style: _hasBeenPressed
-            ? TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                backgroundColor: Colors.white)
-            : pressedStyle,
-      ),
     );
   }
 
