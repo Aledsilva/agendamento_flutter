@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:agendamento_flutter/scheduling_options.dart';
-import 'package:agendamento_flutter/testepage.dart';
+import 'package:agendamento_flutter/reserve_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -12,8 +12,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-
-final format = DateFormat('HH:mm');
+final formatHour = DateFormat('HH:mm');
+final formatDate = DateFormat('yyyy-MM-dd');
 
 //Estilo para a TextButton em caso de ser selecionada//
 const pressedStyle = TextStyle(
@@ -27,6 +27,7 @@ const hourStyle = TextStyle(
     backgroundColor: Colors.white);
 
 class _HomeScreenState extends State<HomeScreen> {
+
   Future<SchedulingOptions> getDinamicProfile() async {
     Map<String, String> headers = {
       'Authorization': 'Token token="bb739e7760407cc4985ae37038a1bef2"',
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SchedulingOptions.fromJson(json.decode(response.body))
             .optionUses
             .forEach((element) {
-          listaQualquer.add(element.name);
+          listModalities.add(element.name);
         });
       });
       return SchedulingOptions.fromJson(json.decode(response.body));
@@ -79,16 +80,20 @@ class _HomeScreenState extends State<HomeScreen> {
       // then parse the JSON.
       print('HORARIO:' + response.body);
       setState(() {
-        SchedulingOptions.fromJson(json.decode(response.body))
+        listScheduling = SchedulingOptions.fromJson(json.decode(response.body));
+
+        listHours = new List();
+
+        /*SchedulingOptions.fromJson(json.decode(response.body))
             .hours
             .forEach((element) {
           var dateTimeString = element.hour;
           var dateTime = DateTime.parse(dateTimeString);
 
-          var formaterClock = format.format(dateTime);
+          var formaterClock = formatHour.format(dateTime);
 
-          listaHorarios.add(formaterClock);
-        });
+          listHours.add(formaterClock);
+        });*/
 
         //listaQualquer =
         //Modalities.fromJson(json.decode(response.body)).optionUses;
@@ -102,13 +107,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  String valorSelecionado;
+  String selectedModality;
   String spaceName = "";
+  String selectedHour;
+  String reservedDate;
 
-  List listaQualquer = [];
-  List listaHorarios = [];
+  List listModalities = [];
+  List listHours = [];
+  SchedulingOptions listScheduling;
 
-  bool _hasBeenPressed = true;
+  bool _showButton = true;
 
   //Váriaveis relacionados ao calendário
   DateTime selectedDate = DateTime.now();
@@ -120,6 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    listScheduling = new SchedulingOptions();
+    listScheduling.hours = List();
     getDinamicProfile();
   }
 
@@ -197,9 +207,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 iconSize: 36,
                 isExpanded: true,
-                value: valorSelecionado,
+                value: selectedModality,
                 style: TextStyle(color: Colors.blue, fontSize: 18),
-                items: listaQualquer.map((modalityItem) {
+                items: listModalities.map((modalityItem) {
                   return DropdownMenuItem(
                     value: modalityItem,
                     child: Row(
@@ -210,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onChanged: (newModalityItem) {
                   setState(() {
                     getTimeTable();
-                    valorSelecionado = newModalityItem;
+                    selectedModality = newModalityItem;
                     spaceName = newModalityItem;
                   });
                 },
@@ -219,12 +229,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
             //Abaixo da DropDown
             //DENTRO DESTA FUNÇÃO - Torna a página rolável ENTRE o Widget do no TOP e no BOTTOM
-            if (valorSelecionado != null) _buildCard(),
+            if (selectedModality != null) _buildCard(),
 
             //Validacão para botão RESERVAR, ele só aparece quando necessário!
             Visibility(
               child: _buildReserveButton(),
-              visible: _hasBeenPressed ? false : true,
+              visible: _showButton ? false : true,
             ),
 
             SizedBox(height: 20)
@@ -246,18 +256,19 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 372,
             child: Card(
               elevation: 5,
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 6,
-                    crossAxisSpacing: 1,
-                    mainAxisSpacing: 1,
-                  ),
-                  itemCount: listaHorarios.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        SizedBox(height: 5),
-                        /*Visibility(
+              child: listScheduling.hours != null
+                  ? GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 6,
+                        crossAxisSpacing: 1,
+                        mainAxisSpacing: 1,
+                      ),
+                      itemCount: listScheduling.hours.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: [
+                            SizedBox(height: 5),
+                            /*Visibility(
                           visible: _hasSelected ? true : false,
                           child: SizedBox(width: 310,
                             child: Padding(
@@ -267,20 +278,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fontSize: 18),),),
 
                           )),*/
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildTxtButton(
-                                listaHorarios[index].toString(), index),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildTxtButton(
+                                    listScheduling.hours[index].hour,
+                                    index,
+                                    listScheduling.hours[index].hasBeenPressed),
+                              ],
+                            ),
                           ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [],
-                        ),
-                      ],
-                    );
-                  }),
+                        );
+                      })
+                  : Container(),
             ),
           ),
         )
@@ -289,14 +299,32 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //Constrói os horários clicáveis//
-  Widget _buildTxtButton(String umHorario, index) {
+  Widget _buildTxtButton(String umHorario, index, bool hasBeenPressed) {
+    var dateTimeString = umHorario;
+    var dateTime = DateTime.parse(dateTimeString);
+
+    var formatedClock = formatHour.format(dateTime);
+
     return TextButton(
-      child: Text(umHorario,
-          style:
-      _hasBeenPressed ? hourStyle : pressedStyle),
+      child:
+          Text(formatedClock, style: hasBeenPressed ? hourStyle : pressedStyle),
       onPressed: () {
         setState(() {
-          _hasBeenPressed = !_hasBeenPressed;
+          listScheduling.hours.forEach((element) {
+            element.hasBeenPressed = true;
+          });
+
+          listScheduling.hours[index].hasBeenPressed =
+              !listScheduling.hours[index].hasBeenPressed;
+
+          selectedHour = formatedClock;
+
+          //Button RESERVAR
+          if (listScheduling.hours[index].hasBeenPressed) {
+            _showButton = true;
+          } else {
+            _showButton = false;
+          }
         });
       },
     );
@@ -304,6 +332,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //Contrói o botão RESERVAR//
   Widget _buildReserveButton() {
+
+    var dateString = selectedDate;
+    var dateTime = DateFormat.yMMMd();
+
+    var formatedDate = formatDate.format(dateString);
+
+    reservedDate = formatedDate;
+
     return Center(
       child: Padding(
         padding: EdgeInsets.only(top: 8),
@@ -319,8 +355,11 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TestePage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ReservePage(selectedHour, selectedModality, reservedDate)));
             },
           ),
         ),

@@ -8,6 +8,7 @@ class SchedulingOptions {
   List<Hours> hours;
   List<OptionUses> optionUses;
 
+
   SchedulingOptions({this.spaces, this.hours, this.optionUses});
 
   SchedulingOptions.fromJson(Map<String, dynamic> json) {
