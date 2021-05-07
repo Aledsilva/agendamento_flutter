@@ -247,6 +247,10 @@ class _HomeScreenState extends State<HomeScreen> {
   //////////  FUNÇÕES  //////////
 
   Widget _buildCard() {
+
+    //dynamic teste = listScheduling.hours.length.toDouble();
+    //print("EEEEEE ${teste}");
+
     return Expanded(
         child: ListView(
       children: [
@@ -300,14 +304,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //Constrói os horários clicáveis//
   Widget _buildTxtButton(String umHorario, index, bool hasBeenPressed) {
-    var dateTimeString = umHorario;
-    var dateTime = DateTime.parse(dateTimeString);
 
-    var formatedClock = formatHour.format(dateTime);
+    var dateTimeString = umHorario;
+    DateFormat inputFormat = DateFormat('dd-MM-yyyy hh:mm');
+    DateTime input = inputFormat.parse(dateTimeString);
+    //var dateTime = DateTime.parse(dateTimeString);
+    var convertedData = DateFormat('hh:mm').format(input);
+    //var formatedClock = formatHour.format(dateTime);
 
     return TextButton(
       child:
-          Text(formatedClock, style: hasBeenPressed ? hourStyle : pressedStyle),
+          Text(convertedData, style: hasBeenPressed ? hourStyle : pressedStyle),
       onPressed: () {
         setState(() {
           listScheduling.hours.forEach((element) {
@@ -317,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
           listScheduling.hours[index].hasBeenPressed =
               !listScheduling.hours[index].hasBeenPressed;
 
-          selectedHour = formatedClock;
+          selectedHour = convertedData;
 
           //Button RESERVAR
           if (listScheduling.hours[index].hasBeenPressed) {
@@ -334,7 +341,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildReserveButton() {
 
     var dateString = selectedDate;
-    var dateTime = DateFormat.yMMMd();
+    //var date = DateFormat.yMMMd();
 
     var formatedDate = formatDate.format(dateString);
 
