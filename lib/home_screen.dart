@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<SchedulingOptions> getDinamicProfile() async {
     Map<String, String> headers = {
-      'Authorization': 'Token token="bb739e7760407cc4985ae37038a1bef2"',
+      'Authorization': 'Token token="1b3d2b3a939ab54b38ed16ac2f636f29"',
       'x-app-id': "1000051",
     };
 
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<SchedulingOptions> getTimeTable() async {
     Map<String, String> headers = {
-      'Authorization': 'Token token="bb739e7760407cc4985ae37038a1bef2"',
+      'Authorization': 'Token token="1b3d2b3a939ab54b38ed16ac2f636f29"',
       'x-app-id': "1000051",
     };
 
@@ -252,54 +252,61 @@ class _HomeScreenState extends State<HomeScreen> {
     //print("EEEEEE ${teste}");
 
     return Expanded(
-        child: ListView(
-      children: [
-        Center(
-          child: SizedBox(
-            height: 210,
-            width: 372,
-            child: Card(
-              elevation: 5,
-              child: listScheduling.hours != null
-                  ? GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 6,
-                        crossAxisSpacing: 1,
-                        mainAxisSpacing: 1,
-                      ),
-                      itemCount: listScheduling.hours.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            SizedBox(height: 5),
-                            /*Visibility(
-                          visible: _hasSelected ? true : false,
-                          child: SizedBox(width: 310,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              child: Text(spaceName,
-                                style: TextStyle(fontWeight: FontWeight.bold,
-                                    fontSize: 18),),),
-
-                          )),*/
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+            child: Padding(
+              padding: EdgeInsets.only(top: 5, bottom: 5),
+              child: ExpansionTile(
+                title: Text("Taitoou"),
+                children: [
+                  ListTile(
+                    title: listScheduling.hours != null
+                      ? SizedBox(
+                      height: 210,
+                        child: Material(
+                          elevation: 3,
+                          child: GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 6,
+                            crossAxisSpacing: 1,
+                            mainAxisSpacing: 1,
+                          ),
+                          itemCount: listScheduling.hours.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
                               children: [
-                                _buildTxtButton(
-                                    listScheduling.hours[index].hour,
-                                    index,
-                                    listScheduling.hours[index].hasBeenPressed),
+                                SizedBox(height: 5),
+                                /*Visibility(
+                                visible: _hasSelected ? true : false,
+                                child: SizedBox(width: 310,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                                    child: Text(spaceName,
+                                      style: TextStyle(fontWeight: FontWeight.bold,
+                                          fontSize: 18),),),
+
+                                )),*/
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _buildTxtButton(
+                                        listScheduling.hours[index].hour,
+                                        index,
+                                        listScheduling.hours[index].hasBeenPressed),
+                                  ],
+                                ),
                               ],
-                            ),
-                          ],
-                        );
-                      })
-                  : Container(),
+                            );
+                          }),
+                        ),
+                      )
+                      : Container(),
+                ),
+                ],
+              ),
             ),
-          ),
-        )
-      ],
-    ));
+
+
+        
+    );
   }
 
   //Constrói os horários clicáveis//

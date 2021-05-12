@@ -26,7 +26,13 @@ class _ReservePageState extends State<ReservePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //APPBAR e botões de ação
-      appBar: AppBar(actions: [
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () =>
+              Navigator.of(context).pop(),
+          ),
+          actions: [
         Padding(
           padding: EdgeInsets.only(left: 275),
           child: InkWell(
@@ -53,7 +59,7 @@ class _ReservePageState extends State<ReservePage> {
 
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 270),
+                  padding: EdgeInsets.only(top: 260),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -118,8 +124,7 @@ class _ReservePageState extends State<ReservePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "Horário: ",
+                              Text("Horário: ",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   fontSize: 16,
@@ -166,7 +171,7 @@ class _ReservePageState extends State<ReservePage> {
 
                         //INICIO DO BOTÃO
                         Padding(
-                          padding: EdgeInsets.only(top: 90, bottom: 5),
+                          padding: EdgeInsets.only(top: 100, bottom: 5),
                           child: SizedBox(
                             height: 50,
                             width: 365,
