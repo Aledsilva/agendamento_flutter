@@ -30,12 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<SchedulingOptions> getDinamicProfile() async {
     Map<String, String> headers = {
-      'Authorization': 'Token token="1b3d2b3a939ab54b38ed16ac2f636f29"',
+      'Authorization': 'Token token="761c62dbe6cdfc2026de52f4696ce4ee"',
       'x-app-id': "1000051",
     };
 
     String urlBase =
-        "https://ravennahmlg.ad-alive.com/api/v1/spaces/list_hours?day=2021-05-03";
+        "https://ravennahmlg.ad-alive.com/api/v1/spaces/list_hours?day=2021-05-11";
 
     final response = await http.get(
       urlBase,
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<SchedulingOptions> getTimeTable() async {
     Map<String, String> headers = {
-      'Authorization': 'Token token="1b3d2b3a939ab54b38ed16ac2f636f29"',
+      'Authorization': 'Token token="761c62dbe6cdfc2026de52f4696ce4ee"',
       'x-app-id': "1000051",
     };
 
@@ -117,6 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
   SchedulingOptions listScheduling;
 
   bool _showButton = true;
+
+  int selectedExpansion;
 
   //Váriaveis relacionados ao calendário
   DateTime selectedDate = DateTime.now();
@@ -252,60 +254,62 @@ class _HomeScreenState extends State<HomeScreen> {
     //print("EEEEEE ${teste}");
 
     return Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(top: 5, bottom: 5),
-              child: ExpansionTile(
-                title: Text("Taitoou"),
-                children: [
-                  ListTile(
-                    title: listScheduling.hours != null
-                      ? SizedBox(
-                      height: 210,
-                        child: Material(
-                          elevation: 3,
-                          child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 6,
-                            crossAxisSpacing: 1,
-                            mainAxisSpacing: 1,
-                          ),
-                          itemCount: listScheduling.hours.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Column(
-                              children: [
-                                SizedBox(height: 5),
-                                /*Visibility(
-                                visible: _hasSelected ? true : false,
-                                child: SizedBox(width: 310,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                                    child: Text(spaceName,
-                                      style: TextStyle(fontWeight: FontWeight.bold,
-                                          fontSize: 18),),),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: 10,
+        key: Key('builder ${selectedExpansion.toString()}'),
+        itemBuilder: (context, int index){
 
-                                )),*/
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    _buildTxtButton(
-                                        listScheduling.hours[index].hour,
-                                        index,
-                                        listScheduling.hours[index].hasBeenPressed),
-                                  ],
-                                ),
-                              ],
-                            );
-                          }),
+          return ExpansionTile(
+            title: Text("Taitoou"),
+            key: Key(index.toString()),
+            onExpansionChanged: (expanded){
+              if(expanded)
+                setState(() {
+                  selectedExpansion = index;
+                });
+              else setState(() {
+                selectedExpansion = 0;
+              });
+            },
+
+            children: [
+              ListTile(
+                title: listScheduling.hours != null
+                    ? SizedBox(
+                  height: 210,
+                  child: Material(
+                    elevation: 3,
+                    child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                          crossAxisSpacing: 1,
+                          mainAxisSpacing: 1,
                         ),
-                      )
-                      : Container(),
-                ),
-                ],
+                        itemCount: listScheduling.hours.length,
+                        itemBuilder: (BuildContext context, int outroindex) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _buildTxtButton(
+                                      listScheduling.hours[outroindex].hour,
+                                      outroindex,
+                                      listScheduling.hours[outroindex].hasBeenPressed),
+                                ],
+                              ),
+                            ],
+                          );
+                        }),
+                  ),
+                )
+                    : Container(),
               ),
-            ),
-
-
-        
+            ],
+          );
+        },
+      ),
     );
   }
 

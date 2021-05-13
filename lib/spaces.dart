@@ -11,6 +11,7 @@ class Spaces {
   int accountId;
   String createdAt;
   String updatedAt;
+  bool expanded;
 
   Spaces({this.id,
     this.name,
