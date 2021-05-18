@@ -31,7 +31,8 @@ dependencies:
   scrolling_day_calendar: ^2.0.2
 
   http: ^0.12.0+2
-  intl: ^0.15.8
+
+  mercado_pago_integration: ^1.1.9
 
 
 dev_dependencies:
@@ -40,6 +41,7 @@ dev_dependencies:
 
 
 dependency_overrides:
+  intl: ^0.17.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
