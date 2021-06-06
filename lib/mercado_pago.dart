@@ -52,6 +52,7 @@ class _MercadoPagoState extends State<MercadoPago> {
               }, (Payment payment) {
                 debugPrint('Payment => ${payment.paymentId}');
               });
+              print(preference.toString());
             },
             child: Text('Test Integration'),
           ),

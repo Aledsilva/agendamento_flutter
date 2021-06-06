@@ -1,3 +1,4 @@
+import 'package:agendamento_flutter/mercado_pago.dart';
 import 'package:flutter/material.dart';
 
 class ReservePage extends StatefulWidget {
@@ -188,7 +189,11 @@ class _ReservePageState extends State<ReservePage> {
                                 setState(() {
                                   //widget.selectedHour = widget.valor;
                                   //pegar os valores de data horario e modalidade
-                                  _resetFields();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MercadoPago()));
                                 });
                               },
                             ),
