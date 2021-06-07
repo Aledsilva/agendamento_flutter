@@ -30,9 +30,10 @@ dependencies:
 
   scrolling_day_calendar: ^2.0.2
 
-
+  easy_mask: ^1.1.5
 
   mercado_pago_integration: ^1.1.9
+
   brasil_fields: ^1.1.2
 
   image_picker: ^0.8.0+1
