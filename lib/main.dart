@@ -1,3 +1,5 @@
+import 'package:agendamento_flutter/TimeBuilder.dart';
+import 'package:agendamento_flutter/clock_teste.dart';
 import 'package:agendamento_flutter/home_screen.dart';
 import 'package:agendamento_flutter/maskTeste.dart';
 import 'package:agendamento_flutter/mercado_pago.dart';
@@ -13,7 +15,7 @@ void main(){
   Intl.defaultLocale = 'pt_BR';
   initializeDateFormatting();
   runApp(MaterialApp(
-    home: TesteHome()
+    home: SampleApp()
   ));
 
 }
