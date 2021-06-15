@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
@@ -12,9 +13,19 @@ class SampleApp extends StatefulWidget {
 
 class SampleAppState extends State<SampleApp> {
   DateTime alert;
+  String captura = "Que horas são?";
+
+  //BOBAGEM DAQUI ATÉÉÉ...
+  String botaoNome = "BOOORA";
+  dynamic estiloMisterio = TextStyle(fontSize: 18);
+  dynamic estiloPokemon = TextStyle(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.blue);
+  dynamic corSim = Colors.yellow;
+  dynamic corNao = Colors.grey;
+  //AQUI
+
   String getSystemTime() {
     var now = new DateTime.now();
-    return new DateFormat("H:mm:s").format(now);
+    return new DateFormat("HH:mm:ss").format(now);
   }
 
   @override
@@ -49,7 +60,31 @@ class SampleAppState extends State<SampleApp> {
                         fontSize: 30,
                         fontWeight: FontWeight.w700),
                   );
-                })
+                }),
+                SizedBox(height: 30),
+                Text(captura,
+                style: estiloMisterio,
+                textAlign: TextAlign.center),
+                SizedBox(height: 30),
+                SizedBox(
+                  height: 60,
+                  width: 300,
+                  child: RaisedButton(
+                    child: Text(botaoNome,
+                    style: TextStyle(fontSize: 25,color: corSim,
+                    fontWeight: FontWeight.bold)),
+                    color: corNao,
+                    onPressed: (){
+                      setState(() {
+                        estiloMisterio = estiloPokemon;
+                        captura = "Hora do show P**@!! \n \n-> ${getSystemTime().toString()} <-";
+                        botaoNome = "BIRRLL!!";
+                        corSim = Colors.red;
+                        corNao = Colors.black;
+                      });
+                    },
+                  ),
+                )
               ],
             ),
           );
