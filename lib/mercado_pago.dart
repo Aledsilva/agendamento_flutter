@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:mercado_pago_integration/core/failures.dart';
 import 'package:mercado_pago_integration/mercado_pago_integration.dart';
-import 'package:mercado_pago_integration/models/payment.dart';
+import 'package:mercado_pago_integration/models/payment.dart';*/
 
-var precoString = "150,90";
+/*var precoString = "150,90";
 var korije = precoString.replaceAll(",", ".");
 
 double preco = double.parse(korije);
@@ -60,4 +60,4 @@ class _MercadoPagoState extends State<MercadoPago> {
       ),
     );
   }
-}
+}*/

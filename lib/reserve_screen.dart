@@ -189,11 +189,11 @@ class _ReservePageState extends State<ReservePage> {
                                 setState(() {
                                   //widget.selectedHour = widget.valor;
                                   //pegar os valores de data horario e modalidade
-                                  Navigator.push(
+                                  /*Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              MercadoPago()));
+                                              MercadoPago()));*/
                                 });
                               },
                             ),

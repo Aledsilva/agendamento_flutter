@@ -32,7 +32,7 @@ dependencies:
 
   easy_mask: ^1.1.5
 
-  mercado_pago_integration: ^1.1.9
+  #mercado_pago_integration: ^1.1.9
 
   brasil_fields: ^1.1.2
 
@@ -44,6 +44,11 @@ dependencies:
 
   timer_builder: ^2.0.0
 
+  flutter_calendar_carousel: ^2.0.1
+
+  table_calendar: ^2.2.1
+  shared_preferences: ^0.5.4+5
+
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +57,7 @@ dev_dependencies:
 
 dependency_overrides:
   intl: ^0.17.0
-  http: ^0.12.0+2
+  http: ^0.12.2
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
