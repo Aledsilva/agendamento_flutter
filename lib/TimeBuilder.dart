@@ -4,14 +4,14 @@ import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 
 
-class SampleApp extends StatefulWidget {
+class TimeClock extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return SampleAppState();
+    return TimeClockState();
   }
 }
 
-class SampleAppState extends State<SampleApp> {
+class TimeClockState extends State<TimeClock> {
   DateTime alert;
   String captura = "Que horas são?";
 

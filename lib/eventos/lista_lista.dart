@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class Lista extends StatefulWidget {
@@ -9,11 +10,13 @@ class _ListaState extends State<Lista> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Icon(Icons.list)
-          ],
+      body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Nenhum evento disponível",
+              style: TextStyle(color: Colors.blueAccent, fontSize: 16))
+            ],
         ),
       ),
     );

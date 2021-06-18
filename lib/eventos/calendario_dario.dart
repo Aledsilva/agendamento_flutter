@@ -51,114 +51,129 @@ class _DynamicEventState extends State<DynamicEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SingleChildScrollView(
-          child: Column(
+      //backgroundColor: Colors.grey[100],
+      body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TableCalendar(
-                events: _events,
-                initialCalendarFormat: CalendarFormat.month,
-                calendarStyle: CalendarStyle(
-                    canEventMarkersOverflow: true,
-                    todayColor: Colors.orange,
-                    selectedColor: Theme.of(context).primaryColor,
-                    todayStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                        color: Colors.white)),
-                headerStyle: HeaderStyle(
-                  centerHeaderTitle: true,
-                  formatButtonDecoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  formatButtonTextStyle: TextStyle(color: Colors.white),
-                  formatButtonShowsNext: false,
-                ),
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                onDaySelected: (date, events,holidays) {
-                  setState(() {
-                    _selectedEvents = events;
-                  });
-                },
-                builders: CalendarBuilders(
-                  selectedDayBuilder: (context, date, events) => Container(
-                      margin: const EdgeInsets.all(4.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Text(
-                        date.day.toString(),
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  todayDayBuilder: (context, date, events) => Container(
-                      margin: const EdgeInsets.all(4.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Text(
-                        date.day.toString(),
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ),
-                calendarController: _controller,
-              ),
-              ..._selectedEvents.map((event) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height/20,
-                  width: MediaQuery.of(context).size.width/2,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey)
-                  ),
-                  child: Center(
-                      child: Text(event,
-                        style: TextStyle(color: Colors.blue,
-                            fontWeight: FontWeight.bold,fontSize: 16),)
-                  ),
-                ),
-              )),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  children: [
-                    Center(
-                      child: Card(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("teste"),
-                            Text("teste"),
-                            Text("teste"),
-                          ],
-                        )
-                      ),
+              Expanded(
+                flex: 6,
+                child: TableCalendar(
+                  events: _events,
+                  initialCalendarFormat: CalendarFormat.month,
+                  calendarStyle: CalendarStyle(
+                      canEventMarkersOverflow: true,
+                      todayColor: Colors.orange,
+                      selectedColor: Theme.of(context).primaryColor,
+                      todayStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          color: Colors.white)),
+                  headerStyle: HeaderStyle(
+                    centerHeaderTitle: true,
+                    formatButtonDecoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                  ],
+                    formatButtonTextStyle: TextStyle(color: Colors.white),
+                    formatButtonShowsNext: false,
+                  ),
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  onDaySelected: (date, events,holidays) {
+                    setState(() {
+                      _selectedEvents = events;
+                    });
+                  },
+                  builders: CalendarBuilders(
+                    selectedDayBuilder: (context, date, events) => Container(
+                        margin: const EdgeInsets.all(4.0),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: Text(
+                          date.day.toString(),
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    todayDayBuilder: (context, date, events) => Container(
+                        margin: const EdgeInsets.all(4.0),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: Text(
+                          date.day.toString(),
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                  calendarController: _controller,
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ..._selectedEvents.map((event) => Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 3, 16, 3),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height/25,
+                          width: MediaQuery.of(context).size.width/2,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey)
+                          ),
+                          child: Center(
+                              child: Text(event,
+                                style: TextStyle(color: Colors.blue,
+                                    fontWeight: FontWeight.bold,fontSize: 16),)
+                          ),
+                        ),
+                      ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: SizedBox(
+                          height: 40,
+                          child: Card(
+                            elevation: 10,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.circle,color: Colors.green, size: 15),Text(" Teste"),
+                                SizedBox(width: 20),
+                                Icon(Icons.circle,color: Colors.orange, size: 15),Text(" Hoje"),
+                                SizedBox(width: 20),
+                                Icon(Icons.circle,color: Colors.blue, size: 15),Text(" Selecionado"),
+                              ],
+                            )
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
-          ),
       ),
-
-      /*floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         child: Icon(Icons.add),
         onPressed: _showAddDialog,
-      ),*/
+      ),
     );
   }
 
-
-
-
 //Isso aqui vai ser descartado
-/*  _showAddDialog() async {
+  _showAddDialog() async {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -190,5 +205,5 @@ class _DynamicEventState extends State<DynamicEvent> {
             )
           ],
         ));
-  }*/
+  }
 }

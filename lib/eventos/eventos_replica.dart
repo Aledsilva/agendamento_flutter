@@ -12,11 +12,11 @@ class EventosReplica extends StatelessWidget {
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
-                Tab(child: Text("Tab1")),
-                Tab(child: Text("Tab2"))
+                Tab(child: Text("CALENDÁRIO")),
+                Tab(child: Text("LISTA"))
               ],
             ),
-            title: Text('Tabs Demo'),
+            title: Text('Eventos'),
           ),
           body: TabBarView(
             children: [
