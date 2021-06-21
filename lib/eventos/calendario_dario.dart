@@ -63,7 +63,8 @@ class _DynamicEventState extends State<DynamicEvent> {
                   calendarStyle: CalendarStyle(
                       canEventMarkersOverflow: true,
                       todayColor: Colors.orange,
-                      selectedColor: Theme.of(context).primaryColor,
+                      markersColor: Colors.deepOrangeAccent,
+                      selectedColor: Colors.black,
                       todayStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
