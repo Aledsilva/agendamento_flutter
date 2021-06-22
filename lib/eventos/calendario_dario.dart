@@ -51,6 +51,9 @@ class _DynamicEventState extends State<DynamicEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Calendário-dário"),
+      ),
       //backgroundColor: Colors.grey[100],
       body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
