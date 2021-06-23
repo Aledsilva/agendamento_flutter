@@ -98,29 +98,37 @@ class _ScheduleDetailsState extends State<ScheduleDetails> {
             Padding(padding: EdgeInsets.all(10)),
 
             Container(
-              height: 30,
-              color: Colors.white70,
-              child:
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: Text("12:40",
-                        style: TextStyle(fontSize: 18)),
+              height: 40,
+              color: Colors.grey,
+              child: Padding(
+                padding: EdgeInsets.only(top: 1, bottom: 1),
+                child: Container(
+                  height: 30,
+                  color: Colors.white70,
+                  child:
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: Text("12:40",
+                            style: TextStyle(fontSize: 18)),
+                      ),
+                      Container(
+                        width: 4,
+                        color: Colors.green,
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text("Quadra 3",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      )
+                    ],
                   ),
-                  Container(
-                    width: 4,
-                    color: Colors.green,
-                  ),
-                  Divider(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text("Quadra 3",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  )
-                ],
+                ),
               ),
-            ),
+
+            )
           ],
         ),
       ),
