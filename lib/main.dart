@@ -19,7 +19,7 @@ void main(){
   Intl.defaultLocale = 'pt_BR';
   initializeDateFormatting();
   runApp(MaterialApp(
-    home: ScheduleDetails()
+    home: DynamicEvent()
   ));
 
 }
