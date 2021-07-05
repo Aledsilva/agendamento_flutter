@@ -13,11 +13,24 @@ class _DynamicEventState extends State<DynamicEvent> {
   Map<DateTime, List<dynamic>> _events;
   List<dynamic> _selectedEvents;
   TextEditingController _eventController;
+  List list1 = [1,2,3,9,10];
+  List list2 = [1,2,5,8,9];
+  List listVazia = [];
   SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
+
+    list1.forEach((element) {
+      if(list2.contains(element)){
+        listVazia.add(element);
+        print("Contém: " + listVazia.toString());
+      }else {
+        print("Não contém: ");
+      }
+    });
+
     _controller = CalendarController();
     _eventController = TextEditingController();
     _events = {};
@@ -50,6 +63,12 @@ class _DynamicEventState extends State<DynamicEvent> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Calendário-dário"),
